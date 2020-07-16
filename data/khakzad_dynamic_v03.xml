@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opsa-mef>
+  <define-fault-tree name="Heat-Exchanger_Accident-Scenario">
+    <define-gate name="Vapor">
+      <label>Vapor overflow</label>
+      <and>
+        <gate name="HTPC"/>
+        <gate name="Vent-sys"/>
+      </and>
+    </define-gate>
+    <define-gate name="HTPC">
+      <label>High temperature protection system</label>
+      <and>
+        <gate name="ATCS"/>
+        <gate name="MTCS"/>
+      </and>
+    </define-gate>
+    <define-gate name="Vent-sys">
+      <label>Ventilation system</label>
+      <or>
+        <basic-event name="Fan"/>
+        <basic-event name="Duct"/>
+        <basic-event name="Vent"/>
+        <basic-event name="Belt"/>
+      </or>
+    </define-gate>
+    <define-gate name="ATCS">
+      <label>Automatic temperature control system</label>
+      <or>
+        <basic-event name="A-valve"/>
+        <gate name="T-ctrl-sys"/>
+      </or>
+    </define-gate>
+    <define-gate name="T-ctrl-sys">
+      <label>Temperature control system</label>
+      <or>
+        <basic-event name="Sensors"/>
+        <basic-event name="P-unit"/>
+      </or>
+    </define-gate>
+    <define-gate name="MTCS">
+      <label>Manual temperature control system</label>
+      <or>
+        <basic-event name="M-valve"/>
+        <gate name="T-sys"/>
+      </or>
+    </define-gate>
+    <define-gate name="T-sys">
+      <label>Temperature measurement system</label>
+      <or>
+        <basic-event name="Operator"/>
+        <basic-event name="Thermo"/>
+      </or>
+    </define-gate>
+  </define-fault-tree>
+  <define-initiating-event name="Vapor" event-tree="EventTree"/>
+  <define-event-tree name="EventTree">
+    <define-functional-event name="Ignition"/>
+    <define-functional-event name="Sprinkler"/>
+    <define-functional-event name="Alarm"/>
+    <define-sequence name="C1"/>
+    <define-sequence name="C2"/>
+    <define-sequence name="C3"/>
+    <define-sequence name="C4"/>
+    <define-sequence name="C5"/>
+    <define-sequence name="C6"/>
+    <define-sequence name="C7"/>
+    <define-sequence name="C8"/>
+    <initial-state>
+      <!-- true = works, false = fails -->
+      <fork functional-event="Ignition">
+        <path state="works">
+          <collect-expression>
+            <float value="0.9"/>
+          </collect-expression>
+          <fork functional-event="Sprinkler">
+            <path state="works">
+              <collect-expression>
+                <float value="0.96"/>
+              </collect-expression>
+              <fork functional-event="Alarm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.9987"/>
+                  </collect-expression>
+                  <sequence name="C1"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.0013"/>
+                  </collect-expression>
+                  <sequence name="C2"/>
+                </path>
+              </fork>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="0.04"/>
+              </collect-expression>
+              <fork functional-event="Alarm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.9987"/>
+                  </collect-expression>
+                  <sequence name="C3"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.0013"/>
+                  </collect-expression>
+                  <sequence name="C4"/>
+                </path>
+              </fork>
+            </path>
+          </fork>
+        </path>
+        <path state="fails">
+          <collect-expression>
+            <float value="0.1"/>
+          </collect-expression>
+          <fork functional-event="Sprinkler">
+            <path state="works">
+              <collect-expression>
+                <float value="0.96"/>
+              </collect-expression>
+              <fork functional-event="Alarm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.7750"/>
+                  </collect-expression>
+                  <sequence name="C5"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.2250"/>
+                  </collect-expression>
+                  <sequence name="C6"/>
+                </path>
+              </fork>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="0.04"/>
+              </collect-expression>
+              <fork functional-event="Alarm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.7750"/>
+                  </collect-expression>
+                  <sequence name="C7"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.2250"/>
+                  </collect-expression>
+                  <sequence name="C8"/>
+                </path>
+              </fork>
+            </path>
+          </fork>
+        </path>
+      </fork>
+    </initial-state>
+  </define-event-tree>
+  <model-data>
+    <define-basic-event name="Fan">
+      <label>Fan failure</label>
+      <float value="0.01"/>
+    </define-basic-event>
+    <define-basic-event name="Duct">
+      <label>Duct failure</label>
+      <float value="0.001"/>
+    </define-basic-event>
+    <define-basic-event name="Vent">
+      <label>Inadequate ventilation</label>
+      <float value="0.015"/>
+    </define-basic-event>
+    <define-basic-event name="Belt">
+      <label>Belt failure</label>
+      <float value="0.05"/>
+    </define-basic-event>
+    <define-basic-event name="Sensors">
+      <label>Sensors</label>
+      <float value="0.04"/>
+    </define-basic-event>
+    <define-basic-event name="P-unit">
+      <label>Pneumatic unit</label>
+      <float value="0.2015"/>
+    </define-basic-event>
+    <define-basic-event name="A-valve">
+      <label>Automatic steam valve</label>
+      <float value="0.0276"/>
+    </define-basic-event>
+    <define-basic-event name="M-valve">
+      <label>Manual steam valve</label>
+      <float value="0.0243"/>
+    </define-basic-event>
+    <define-basic-event name="Operator">
+      <label>Operator</label>
+      <float value="0.02"/>
+    </define-basic-event>
+    <define-basic-event name="Thermo">
+      <label>Infrared Thermo</label>
+      <float value="0.0468"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

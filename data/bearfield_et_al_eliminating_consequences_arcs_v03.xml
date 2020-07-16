@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<opsa-mef>
+  <define-fault-tree name="Simple Fault Tree">
+    <define-gate name="OR">
+      <label>Test of an OR gate</label>
+      <or>
+        <basic-event name="X1"/>
+        <basic-event name="X2"/>
+      </or>
+    </define-gate>
+  </define-fault-tree>
+  <define-initiating-event name="OR" event-tree="EventTree"/>
+  <define-event-tree name="EventTree">
+    <define-functional-event name="e1"/>
+    <define-functional-event name="e2"/>
+    <define-sequence name="c1"/>
+    <define-sequence name="c2"/>
+    <initial-state>
+      <fork functional-event="e1">
+        <path state="works">
+          <collect-expression>
+            <float value="0.7"/>
+          </collect-expression>
+          <fork functional-event="e2">
+            <path state="works">
+              <collect-expression>
+                <float value="0.01"/>
+              </collect-expression>
+              <sequence name="c1"/>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="0.99"/>
+              </collect-expression>
+              <sequence name="c2"/>
+            </path>
+          </fork>
+        </path>
+        <path state="fails">
+          <collect-expression>
+            <float value="0.3"/>
+          </collect-expression>
+          <fork functional-event="e2">
+            <path state="works">
+              <collect-expression>
+                <float value="0.1"/>
+              </collect-expression>
+              <sequence name="c1"/>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="0.9"/>
+              </collect-expression>
+              <sequence name="c2"/>
+            </path>
+          </fork>
+        </path>
+      </fork>
+    </initial-state>
+  </define-event-tree>
+  <model-data>
+    <define-basic-event name="X1">
+      <label>First basic event</label>
+      <float value="1.0E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X2">
+      <label>Second basic event</label>
+      <float value="1.0E-3"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

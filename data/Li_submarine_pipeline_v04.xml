@@ -1,0 +1,459 @@
+<?xml version="1.0"?>
+<opsa-mef>
+  <define-fault-tree name="Submarine oil and gas pipeline leakage">
+    <define-gate name="failure leakage">
+      <label>Leakage failure of submarine pipeline</label>
+      <or>
+        <gate name="external factor"/>
+        <gate name="internal factor"/>
+      </or>
+    </define-gate>
+    <define-gate name="external factor">
+      <label>External factors</label>
+      <or>
+        <gate name="corrosion"/>
+        <gate name="external loads"/>
+        <gate name="natural disaster"/>
+        <gate name="suspended span"/>
+      </or>
+    </define-gate>
+    <define-gate name="internal factor">
+      <label>Internal factors</label>
+      <or>
+        <gate name="auxiliaries failure"/>
+        <gate name="material defect"/>
+        <gate name="weld defect"/>
+      </or>
+    </define-gate>
+    <define-gate name="corrosion">
+      <label>Corrosion</label>
+      <or>
+        <gate name="internal corrosion"/>
+        <gate name="external corrosion"/>
+      </or>
+    </define-gate>
+    <define-gate name="external loads">
+      <label>External loads</label>
+      <or>
+        <basic-event name="X6"/>
+        <basic-event name="X7"/>
+        <basic-event name="X9"/>
+        <basic-event name="X10"/>
+        <basic-event name="X8"/>
+      </or>
+    </define-gate>
+    <define-gate name="suspended span">
+      <label>Suspended span</label>
+      <and>
+        <gate name="harsh environmental conditions"/>
+        <gate name="lack of burial depth"/>
+      </and>
+    </define-gate>
+    <define-gate name="natural disaster">
+      <label>Natural disaster</label>
+      <or>
+        <basic-event name="X17"/>
+        <basic-event name="X18"/>
+        <basic-event name="X16"/>
+      </or>
+    </define-gate>
+    <define-gate name="internal corrosion">
+      <label>Internal corrosion</label>
+      <or>
+        <basic-event name="X2"/>
+        <basic-event name="X1"/>
+        <basic-event name="X3"/>
+      </or>
+    </define-gate>
+    <define-gate name="external corrosion">
+      <label>External corrosion</label>
+      <or>
+        <basic-event name="X5"/>
+        <basic-event name="X4"/>
+      </or>
+    </define-gate>
+    <define-gate name="lack of burial depth">
+      <label>Lack of burial depth</label>
+      <or>
+        <basic-event name="X11"/>
+        <basic-event name="X13"/>
+        <basic-event name="X12"/>
+      </or>
+    </define-gate>
+    <define-gate name="harsh environmental conditions">
+      <label>Harsh environmental conditions</label>
+      <or>
+        <basic-event name="X14"/>
+        <basic-event name="X15"/>
+      </or>
+    </define-gate>
+    <define-gate name="material defect">
+      <label>Material defect</label>
+      <or>
+        <basic-event name="X20"/>
+        <basic-event name="X19"/>
+      </or>
+    </define-gate>
+    <define-gate name="weld defect">
+      <label>Weld-seam defect</label>
+      <or>
+        <basic-event name="X21"/>
+        <basic-event name="X22"/>
+      </or>
+    </define-gate>
+    <define-gate name="auxiliaries failure">
+      <label>Auxiliaries Failure</label>
+      <or>
+        <basic-event name="X24"/>
+        <basic-event name="X23"/>
+      </or>
+    </define-gate>
+  </define-fault-tree>
+  <define-initiating-event name="failure leakage" event-tree="EventTree"/>
+  <define-event-tree name="EventTree">
+    <define-functional-event name="S1">
+      <label>Monitor and alarm</label>
+    </define-functional-event>
+    <define-functional-event name="S2">
+      <label>Human response</label>
+    </define-functional-event>
+    <define-functional-event name="S3">
+      <label>Emergency shutdown</label>
+    </define-functional-event>
+    <define-functional-event name="S4">
+      <label>Negative pressure protection</label>
+    </define-functional-event>
+    <define-functional-event name="S5">
+      <label>Emergency response</label>
+    </define-functional-event>
+    <define-functional-event name="S6">
+      <label>Ignition prevention</label>
+    </define-functional-event>
+    <define-sequence name="1-A"/>
+    <define-sequence name="2-A"/>
+    <define-sequence name="3-B"/>
+    <define-sequence name="4-C"/>
+    <define-sequence name="5-A"/>
+    <define-sequence name="6-D"/>
+    <define-sequence name="7-E"/>
+    <define-sequence name="8-A"/>
+    <define-sequence name="9-A"/>
+    <define-sequence name="10-B"/>
+    <define-sequence name="11-C"/>
+    <define-sequence name="12-A"/>
+    <define-sequence name="13-D"/>
+    <define-sequence name="14-E"/>
+    <define-sequence name="15-A"/>
+    <define-sequence name="16-D"/>
+    <define-sequence name="17-E"/>
+    <initial-state>
+      <fork functional-event="S1">
+        <path state="works">
+          <collect-expression>
+            <float value="0.997"/>
+          </collect-expression>
+          <fork functional-event="S3">
+            <path state="works">
+              <collect-expression>
+                <float value="0.98"/>
+              </collect-expression>
+              <fork functional-event="S4">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.96"/>
+                  </collect-expression>
+                  <sequence name="1-A"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="4.0E-2"/>
+                  </collect-expression>
+                  <fork functional-event="S5">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.9945"/>
+                      </collect-expression>
+                      <sequence name="2-A"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="5.5E-03"/>
+                      </collect-expression>
+                      <fork functional-event="S6">
+                        <path state="works">
+                          <collect-expression>
+                            <float value="0.97"/>
+                          </collect-expression>
+                          <sequence name="3-B"/>
+                        </path>
+                        <path state="fails">
+                          <collect-expression>
+                            <float value="3.0E-02"/>
+                          </collect-expression>
+                          <sequence name="4-C"/>
+                        </path>
+                      </fork>
+                    </path>
+                  </fork>
+                </path>
+              </fork>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="2.0E-02"/>
+              </collect-expression>
+              <fork functional-event="S5">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.9945"/>
+                  </collect-expression>
+                  <sequence name="5-A"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="5.5E-03"/>
+                  </collect-expression>
+                  <fork functional-event="S6">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.97"/>
+                      </collect-expression>
+                      <sequence name="6-D"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="3.0E-02"/>
+                      </collect-expression>
+                      <sequence name="7-E"/>
+                    </path>
+                  </fork>
+                </path>
+              </fork>
+            </path>
+          </fork>
+        </path>
+        <path state="fails">
+          <collect-expression>
+            <float value="3.0E-03"/>
+          </collect-expression>
+          <fork functional-event="S2">
+            <path state="works">
+              <collect-expression>
+                <float value="0.99"/>
+              </collect-expression>
+              <fork functional-event="S3">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.98"/>
+                  </collect-expression>
+                  <fork functional-event="S4">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.96"/>
+                      </collect-expression>
+                      <sequence name="8-A"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="4.0E-02"/>
+                      </collect-expression>
+                      <fork functional-event="S5">
+                        <path state="works">
+                          <collect-expression>
+                            <float value="0.9945"/>
+                          </collect-expression>
+                          <sequence name="9-A"/>
+                        </path>
+                        <path state="fails">
+                          <collect-expression>
+                            <float value="5.5E-03"/>
+                          </collect-expression>
+                          <fork functional-event="S6">
+                            <path state="works">
+                              <collect-expression>
+                                <float value="0.97"/>
+                              </collect-expression>
+                              <sequence name="10-B"/>
+                            </path>
+                            <path state="fails">
+                              <collect-expression>
+                                <float value="3.0E-02"/>
+                              </collect-expression>
+                              <sequence name="11-C"/>
+                            </path>
+                          </fork>
+                        </path>
+                      </fork>
+                    </path>
+                  </fork>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="2.0E-02"/>
+                  </collect-expression>
+                  <fork functional-event="S5">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.9945"/>
+                      </collect-expression>
+                      <sequence name="12-A"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="5.5E-03"/>
+                      </collect-expression>
+                      <fork functional-event="S6">
+                        <path state="works">
+                          <collect-expression>
+                            <float value="0.97"/>
+                          </collect-expression>
+                          <sequence name="13-D"/>
+                        </path>
+                        <path state="fails">
+                          <collect-expression>
+                            <float value="3.0E-02"/>
+                          </collect-expression>
+                          <sequence name="14-E"/>
+                        </path>
+                      </fork>
+                    </path>
+                  </fork>
+                </path>
+              </fork>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="1.0E-02"/>
+              </collect-expression>
+              <fork functional-event="S5">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.9945"/>
+                  </collect-expression>
+                  <sequence name="15-A"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="5.5E-03"/>
+                  </collect-expression>
+                  <fork functional-event="S6">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.97"/>
+                      </collect-expression>
+                      <sequence name="16-D"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="3.0E-02"/>
+                      </collect-expression>
+                      <sequence name="17-E"/>
+                    </path>
+                  </fork>
+                </path>
+              </fork>
+            </path>
+          </fork>
+        </path>
+      </fork>
+    </initial-state>
+  </define-event-tree>
+  <model-data>
+    <define-basic-event name="X1">
+      <label>Not removing the corrosion gas and impurities</label>
+      <float value="1.0E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X2">
+      <label>Not adding corrosion inhibitor</label>
+      <float value="1.1E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X3">
+      <label>Not pigging regularly</label>
+      <float value="2.0E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X4">
+      <label>Anticorrosive coating failure</label>
+      <float value="5.0E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X5">
+      <label>Cathodic protection failure</label>
+      <float value="2.7E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X6">
+      <label>Dropped objects hit</label>
+      <float value="1.5E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X7">
+      <label>Anchoring work</label>
+      <float value="2.0E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X8">
+      <label>Fishing gear interaction</label>
+      <float value="2.5E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X9">
+      <label>Man-made drilling oil stolen</label>
+      <float value="3.0E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X10">
+      <label>Offshore construction</label>
+      <float value="5.0E-5"/>
+    </define-basic-event>
+    <define-basic-event name="X11">
+      <label>Design burial depth is not enough</label>
+      <float value="6.4E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X12">
+      <label>Operation of burial depth is not enough</label>
+      <float value="4.0E-5"/>
+    </define-basic-event>
+    <define-basic-event name="X13">
+      <label>Failure of treatment timely</label>
+      <float value="3.3E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X14">
+      <label>Strong current and wave</label>
+      <float value="2.0E-5"/>
+    </define-basic-event>
+    <define-basic-event name="X15">
+      <label>Seabed soil are eroded easily</label>
+      <float value="6.0E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X16">
+      <label>Subsea earthquake</label>
+      <float value="6.3E-6"/>
+    </define-basic-event>
+    <define-basic-event name="X17">
+      <label>Seabed movement</label>
+      <float value="2.3E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X18">
+      <label>Typhoon</label>
+      <float value="3.7E-5"/>
+    </define-basic-event>
+    <define-basic-event name="X19">
+      <label>Design defect of material</label>
+      <float value="8.4E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X20">
+      <label>Construction defect of material</label>
+      <float value="9.7E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X21">
+      <label>Design defect of weld-seam</label>
+      <float value="2.3E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X22">
+      <label>Construction defect of weld-seam</label>
+      <float value="6.5E-4"/>
+    </define-basic-event>
+    <define-basic-event name="X23">
+      <label>Auxiliaries aging</label>
+      <float value="3.2E-3"/>
+    </define-basic-event>
+    <define-basic-event name="X24">
+      <label>Design defect of auxiliaries</label>
+      <float value="1.0E-5"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>

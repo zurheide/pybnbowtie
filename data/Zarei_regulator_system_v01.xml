@@ -1,0 +1,480 @@
+<?xml version="1.0"?>
+<opsa-mef>
+  <define-fault-tree name="Regulator Systen Failure FTA">
+    <define-gate name="RSF">
+      <label>Regulator Systen Failure</label>
+      <or>
+        <gate name="IE1"/>
+        <gate name="IE5"/>
+        <gate name="IE9"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE1">
+      <label>Human failure (unsafe behavior)</label>
+      <or>
+        <gate name="IE2"/>
+        <gate name="IE3"/>
+        <gate name="IE4"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE2">
+      <label>Poor permit to work</label>
+      <or>
+        <basic-event name="X9"/>
+        <basic-event name="X10"/>
+        <basic-event name="X11"/>
+        <basic-event name="X12"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE3">
+      <label>Failure of procedure implementation</label>
+      <or>
+        <basic-event name="X5"/>
+        <basic-event name="X6"/>
+        <basic-event name="X7"/>
+        <basic-event name="X8"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE4">
+      <label>Stress and hurry during work</label>
+      <or>
+        <basic-event name="X1"/>
+        <basic-event name="X2"/>
+        <basic-event name="X3"/>
+        <basic-event name="X4"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE5">
+      <label>Process failure</label>
+      <or>
+        <gate name="IE6"/>
+        <gate name="IE8"/>
+        <basic-event name="X13"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE6">
+      <label>Overpressure</label>
+      <or>
+        <gate name="IE7"/>
+        <basic-event name="X14"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE7">
+      <label>Orifice obstruction/poor filtering</label>
+      <and>
+        <basic-event name="X15"/>
+        <basic-event name="X16"/>
+        <basic-event name="X17"/>
+      </and>
+    </define-gate>
+    <define-gate name="IE8">
+      <label>Blockage of pipes</label>
+      <and>
+        <basic-event name="X18"/>
+        <basic-event name="X19"/>
+      </and>
+    </define-gate>
+    <define-gate name="IE9">
+      <label>Mechanical failure</label>
+      <or>
+        <gate name="IE10"/>
+        <gate name="IE11"/>
+        <gate name="IE14"/>
+        <gate name="IE15"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE10">
+      <label>Lack of proper fastening</label>
+      <or>
+        <basic-event name="X25"/>
+        <basic-event name="X26"/>
+        <basic-event name="X27"/>
+        <basic-event name="X28"/>
+        <basic-event name="X29"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE11">
+      <label>Corrosion</label>
+      <or>
+        <gate name="IE12"/>
+        <gate name="IE13"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE12">
+      <label>External corrosion</label>
+      <or>
+        <basic-event name="X20"/>
+        <basic-event name="X21"/>
+        <basic-event name="X22"/>
+        <basic-event name="X23"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE13">
+      <label>Internal corrosion</label>
+      <or>
+        <basic-event name="X21"/>
+        <basic-event name="X24"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE14">
+      <label>Pipe shake</label>
+      <and>
+        <basic-event name="X30"/>
+        <basic-event name="X31"/>
+        <basic-event name="X32"/>
+        <basic-event name="X33"/>
+      </and>
+    </define-gate>
+    <define-gate name="IE15">
+      <label>Equipment fatigue</label>
+      <or>
+        <gate name="IE16"/>
+        <gate name="IE18"/>
+      </or>
+    </define-gate>
+    <define-gate name="IE16">
+      <label>Heat fatigue</label>
+      <and>
+        <basic-event name="X34"/>
+        <gate name="IE17"/>
+      </and>
+    </define-gate>
+    <define-gate name="IE17">
+      <label>Gas temperature changes</label>
+      <and>
+        <basic-event name="X35"/>
+        <basic-event name="X33"/>
+        <basic-event name="X36"/>
+        <basic-event name="X37"/>
+      </and>
+    </define-gate>
+    <define-gate name="IE18">
+      <label>Mechanical fatigue</label>
+      <and>
+        <basic-event name="X38"/>
+        <basic-event name="X39"/>
+        <basic-event name="X40"/>
+        <basic-event name="X41"/>
+        <basic-event name="X42"/>
+        <basic-event name="X43"/>
+      </and>
+    </define-gate>
+  </define-fault-tree>
+  <define-initiating-event name="RSF" event-tree="EventTree"/>
+  <define-event-tree name="EventTree">
+    <define-functional-event name="ESDa">
+      <label>Automatic emergency shutdown</label>
+    </define-functional-event>
+    <define-functional-event name="II">
+      <label>Immediate ignition</label>
+    </define-functional-event>
+    <define-functional-event name="ESDm">
+      <label>Manual emergency shutdown</label>
+    </define-functional-event>
+    <define-functional-event name="DI">
+      <label>Delayed ignition</label>
+    </define-functional-event>
+    <define-functional-event name="Cong">
+      <label>Congestion</label>
+    </define-functional-event>
+    <define-sequence name="C1"/>
+    <define-sequence name="C2"/>
+    <define-sequence name="C3"/>
+    <define-sequence name="C4"/>
+    <define-sequence name="C5"/>
+    <define-sequence name="C6"/>
+    <define-sequence name="C7"/>
+    <define-sequence name="C8"/>
+    <define-sequence name="C9"/>
+    <!--
+	Safety barriers Probability
+	Immediate ignition barrier 					0.10
+	Delay ignition barrier (when ESDm worked) 	0.30
+	Delay ignition barrier (when ESDm failed) 	0.60
+	Congestion 									0.60
+	ESDa 										0.33
+	ESDm 										0.33
+	-->
+    <initial-state>
+      <fork functional-event="ESDa">
+        <path state="works">
+          <collect-expression>
+            <float value="0.67"/>
+          </collect-expression>
+          <sequence name="C1"/>
+        </path>
+        <path state="fails">
+          <collect-expression>
+            <float value="0.33"/>
+          </collect-expression>
+          <fork functional-event="II">
+            <path state="works">
+              <collect-expression>
+                <float value="0.90"/>
+              </collect-expression>
+              <fork functional-event="ESDm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.67"/>
+                  </collect-expression>
+                  <fork functional-event="DI">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.70"/>
+                      </collect-expression>
+                      <sequence name="C2"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="0.30"/>
+                      </collect-expression>
+                      <fork functional-event="Cong">
+                        <path state="works">
+                          <collect-expression>
+                            <float value="0.40"/>
+                          </collect-expression>
+                          <sequence name="C3"/>
+                        </path>
+                        <path state="fails">
+                          <collect-expression>
+                            <float value="0.60"/>
+                          </collect-expression>
+                          <sequence name="C4"/>
+                        </path>
+                      </fork>
+                    </path>
+                  </fork>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.33"/>
+                  </collect-expression>
+                  <fork functional-event="DI">
+                    <path state="works">
+                      <collect-expression>
+                        <float value="0.40"/>
+                      </collect-expression>
+                      <sequence name="C5"/>
+                    </path>
+                    <path state="fails">
+                      <collect-expression>
+                        <float value="0.60"/>
+                      </collect-expression>
+                      <fork functional-event="Cong">
+                        <path state="works">
+                          <collect-expression>
+                            <float value="0.40"/>
+                          </collect-expression>
+                          <sequence name="C6"/>
+                        </path>
+                        <path state="fails">
+                          <collect-expression>
+                            <float value="0.60"/>
+                          </collect-expression>
+                          <sequence name="C7"/>
+                        </path>
+                      </fork>
+                    </path>
+                  </fork>
+                </path>
+              </fork>
+            </path>
+            <path state="fails">
+              <collect-expression>
+                <float value="0.10"/>
+              </collect-expression>
+              <fork functional-event="ESDm">
+                <path state="works">
+                  <collect-expression>
+                    <float value="0.67"/>
+                  </collect-expression>
+                  <sequence name="C8"/>
+                </path>
+                <path state="fails">
+                  <collect-expression>
+                    <float value="0.33"/>
+                  </collect-expression>
+                  <sequence name="C9"/>
+                </path>
+              </fork>
+            </path>
+          </fork>
+        </path>
+      </fork>
+    </initial-state>
+  </define-event-tree>
+  <model-data>
+    <define-basic-event name="X1">
+      <label>Wrong hazard assessment</label>
+      <float value="9.00E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X2">
+      <label>Intentional error during operation</label>
+      <float value="1.00E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X3">
+      <label>Inadequate training</label>
+      <float value="4.00E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X4">
+      <label>Inadequate experience</label>
+      <float value="1.00E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X5">
+      <label>Station restart up</label>
+      <float value="8.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X6">
+      <label>Sudden interuption of gas subscribers</label>
+      <float value="8.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X7">
+      <label>Fear of explosion and fire</label>
+      <float value="8.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X8">
+      <label>Fool/lack of equipment</label>
+      <float value="8.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X9">
+      <label>Lack of permit implementation</label>
+      <float value="7.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X10">
+      <label>Failure in permit implementation</label>
+      <float value="7.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X11">
+      <label>Wrong permit</label>
+      <float value="8.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X12">
+      <label>Without permit</label>
+      <float value="7.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X13">
+      <label>Not testing of ran along with sensing</label>
+      <float value="3.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X14">
+      <label>Tearing sleeve</label>
+      <float value="4.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X15">
+      <label>Poor assembling</label>
+      <float value="3.0E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X16">
+      <label>Non-standard equipment</label>
+      <float value="2.5E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X17">
+      <label>Poor maintenance</label>
+      <float value="5.0E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X18">
+      <label>Cold weather</label>
+      <float value="1.5E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X19">
+      <label>Weakness filtering</label>
+      <float value="1.30E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X20">
+      <label>Erosion</label>
+      <float value="5.0E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X21">
+      <label>Anti-corrosion layer</label>
+      <float value="1.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X22">
+      <label>Poor detection of corrosion</label>
+      <float value="1.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X23">
+      <label>Poor inspection program</label>
+      <float value="5.0E-05"/>
+    </define-basic-event>
+    <define-basic-event name="X24">
+      <label>Cathodic protection</label>
+      <float value="5.0E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X25">
+      <label>Flaws in sensing testing</label>
+      <float value="4.0E-05"/>
+    </define-basic-event>
+    <define-basic-event name="X26">
+      <label>Closing gear to gear of pipes</label>
+      <float value="4.0E-05"/>
+    </define-basic-event>
+    <define-basic-event name="X27">
+      <label>Poor detection of leakages</label>
+      <float value="4.0E-05"/>
+    </define-basic-event>
+    <define-basic-event name="X28">
+      <label>Failure of restraint of sensing</label>
+      <float value="4.0E-04"/>
+    </define-basic-event>
+    <define-basic-event name="X29">
+      <label>Inappropiate fitting</label>
+      <float value="4.0E-05"/>
+    </define-basic-event>
+    <define-basic-event name="X30">
+      <label>High velocity gas</label>
+      <float value="2.0E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X31">
+      <label>Gas pressure drop</label>
+      <float value="2.5E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X32">
+      <label>Small pipes diameter</label>
+      <float value="1.50E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X33">
+      <label>High gas flow</label>
+      <float value="2.00E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X34">
+      <label>Ambient temperature changes</label>
+      <float value="4.0E-03"/>
+    </define-basic-event>
+    <define-basic-event name="X35">
+      <label>Long distances to subscribers</label>
+      <float value="1.0E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X36">
+      <label>Heather off</label>
+      <float value="1.50E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X37">
+      <label>Poor set up in heater temperature</label>
+      <float value="1.50E-02"/>
+    </define-basic-event>
+    <define-basic-event name="X38">
+      <label>Tangential stress</label>
+      <float value="1.50E-01"/>
+    </define-basic-event>
+    <define-basic-event name="X39">
+      <label>Shear stress</label>
+      <float value="1.50E-01"/>
+    </define-basic-event>
+    <define-basic-event name="X40">
+      <label>Axial stress</label>
+      <float value="1.50E-01"/>
+    </define-basic-event>
+    <define-basic-event name="X41">
+      <label>Tensile axial load</label>
+      <float value="2.00E-01"/>
+    </define-basic-event>
+    <define-basic-event name="X42">
+      <label>Compressive axial load</label>
+      <float value="2.00E-01"/>
+    </define-basic-event>
+    <define-basic-event name="X43">
+      <label>Vibration</label>
+      <float value="2.5E-01"/>
+    </define-basic-event>
+  </model-data>
+</opsa-mef>
